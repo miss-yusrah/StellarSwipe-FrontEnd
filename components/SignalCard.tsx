@@ -16,6 +16,7 @@ import { TradeModal } from "@/components/TradeModal";
 import { cn } from "@/lib/utils";
 import { MiniChart } from "./chart/MiniChart";
 import { useDemoModeStore } from "@/store/useDemoModeStore";
+import analyticsService from "@/services/analytics";
 
 interface ROIPoint {
   value: number;
@@ -78,12 +79,20 @@ export function SignalCard({
 
   function handlePass() {
     setDismissed(true);
+    analyticsService.track('swipe_action', {
+      direction: 'pass',
+      signal_id: pair,
+    });
     onPass?.();
   }
 
   function handleExecuteTrade() {
     if (executingRef.current) return;
     executingRef.current = true;
+    analyticsService.track('swipe_action', {
+      direction: 'trade',
+      signal_id: pair,
+    });
     setModalOpen(true);
   }
 

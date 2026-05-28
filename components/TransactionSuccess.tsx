@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useTransactionStore } from "@/store/useTransactionStore";
 import { showNotification } from "@/lib/notifications";
 import { useNotificationPreference } from "@/hooks/useNotificationPreference";
+import analyticsService from "@/services/analytics";
 
 const AUTO_DISMISS_MS = 8000;
 
@@ -22,10 +23,17 @@ export function TransactionSuccess() {
   const handleContinueSwiping = useCallback(() => clearSuccess(), [clearSuccess]);
 
   useEffect(() => {
-    if (!showSuccess || !success || !alertsEnabled) return;
-    showNotification("Trade Executed", {
-      body: `Your swap for ${success.token} at ${success.price} completed successfully`,
-      icon: "✓",
+    if (!showSuccess || !success) return;
+    if (alertsEnabled) {
+      showNotification("Trade Executed", {
+        body: `Your swap for ${success.token} at ${success.price} completed successfully`,
+        icon: "✓",
+      });
+    }
+    analyticsService.track('trade_confirmation_success', {
+      asset_pair: success.token,
+      amount: success.amount,
+      price: success.price,
     });
   }, [showSuccess, success, alertsEnabled]);
 

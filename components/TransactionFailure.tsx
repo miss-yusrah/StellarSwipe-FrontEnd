@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useTransactionStore } from "@/store/useTransactionStore";
 import { showNotification } from "@/lib/notifications";
 import { useNotificationPreference } from "@/hooks/useNotificationPreference";
+import analyticsService from "@/services/analytics";
 
 interface TransactionFailureProps {
   onRetry?: (preservedInput: Record<string, unknown> | null) => void;
@@ -30,10 +31,16 @@ export function TransactionFailure({ onRetry }: TransactionFailureProps) {
   }, [clearError, setPreservedInput]);
 
   useEffect(() => {
-    if (!showError || !error || !alertsEnabled) return;
-    showNotification("Trade Failed", {
-      body: error.message || "Something went wrong during the trade execution.",
-      icon: "⚠️",
+    if (!showError || !error) return;
+    if (alertsEnabled) {
+      showNotification("Trade Failed", {
+        body: error.message || "Something went wrong during the trade execution.",
+        icon: "⚠️",
+      });
+    }
+    analyticsService.track('trade_confirmation_failed', {
+      error_message: error.message || 'unknown_error',
+      error_code: error.code || undefined,
     });
   }, [showError, error, alertsEnabled]);
 
