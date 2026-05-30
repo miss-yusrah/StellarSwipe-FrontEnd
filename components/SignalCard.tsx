@@ -17,10 +17,13 @@ export function SignalCard({ signal, expanded, onToggle }: Props) {
       {/* Collapsed row */}
       <button
         onClick={onToggle}
-        className="w-full p-4 flex justify-between items-center hover:bg-muted/40 transition-colors"
+        aria-expanded={expanded}
+        aria-controls={`signal-details-${signal.id}`}
+        aria-label={`${signal.asset} ${signal.action} ${signal.confidence}% confidence — ${expanded ? "collapse" : "expand"} details`}
+        className="w-full p-4 flex justify-between items-center hover:bg-muted/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
       >
         <span className="font-medium">{signal.asset}</span>
-        <span className={signal.action === "BUY" ? "text-green-500" : "text-red-500"}>
+        <span className={signal.action === "BUY" ? "text-green-600" : "text-red-600"}>
           {signal.action}
         </span>
         <span className="text-muted-foreground">{signal.confidence}%</span>
@@ -28,6 +31,7 @@ export function SignalCard({ signal, expanded, onToggle }: Props) {
           animate={{ rotate: expanded ? 180 : 0 }}
           transition={{ duration: 0.2 }}
           className="text-muted-foreground"
+          aria-hidden="true"
         >
           <ChevronDown className="h-4 w-4" />
         </motion.span>
@@ -38,6 +42,7 @@ export function SignalCard({ signal, expanded, onToggle }: Props) {
         {expanded && (
           <motion.div
             key="details"
+            id={`signal-details-${signal.id}`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -59,9 +64,9 @@ export function SignalCard({ signal, expanded, onToggle }: Props) {
                     <span className="text-muted-foreground">Entry</span>
                     <span>{signal.stats.entryPrice}</span>
                     <span className="text-muted-foreground">Target</span>
-                    <span className="text-green-500">{signal.stats.targetPrice}</span>
+                    <span className="text-green-600">{signal.stats.targetPrice}</span>
                     <span className="text-muted-foreground">Stop Loss</span>
-                    <span className="text-red-500">{signal.stats.stopLoss}</span>
+                    <span className="text-red-600">{signal.stats.stopLoss}</span>
                     <span className="text-muted-foreground">R/R</span>
                     <span>{signal.stats.riskReward}</span>
                   </div>

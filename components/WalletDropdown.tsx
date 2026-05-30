@@ -10,6 +10,7 @@ export function WalletDropdown() {
   const { publicKey, disconnect } = useWallet();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
   const truncated = publicKey
@@ -23,11 +24,16 @@ export function WalletDropdown() {
     setTimeout(() => setCopied(false), 2000);
   }, [publicKey]);
 
+  function handleClose() {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
   // Close on outside click
   useEffect(() => {
     function onPointerDown(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
+        handleClose();
       }
     }
     document.addEventListener("pointerdown", onPointerDown);
@@ -37,7 +43,7 @@ export function WalletDropdown() {
   // Close on Escape
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") handleClose();
     }
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
@@ -46,19 +52,22 @@ export function WalletDropdown() {
   return (
     <div ref={ref} className="relative">
       <Button
+        ref={triggerRef}
         variant="outline"
         onClick={() => setOpen((o) => !o)}
-        aria-haspopup="true"
+        aria-haspopup="menu"
         aria-expanded={open}
+        aria-label={`Wallet menu for ${truncated}`}
         className="font-mono gap-2"
       >
         {truncated}
-        <ChevronDown className={cn("h-4 w-4 transition-transform", open && "rotate-180")} />
+        <ChevronDown aria-hidden="true" className={cn("h-4 w-4 transition-transform", open && "rotate-180")} />
       </Button>
 
       {open && (
         <div
           role="menu"
+          aria-label="Wallet options"
           className="absolute right-0 mt-2 w-72 rounded-xl border bg-popover shadow-lg p-2 flex flex-col gap-1 z-50"
         >
           {/* Full address */}
@@ -71,13 +80,14 @@ export function WalletDropdown() {
           {/* Copy */}
           <button
             role="menuitem"
+            tabIndex={0}
             onClick={handleCopy}
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors"
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
           >
             {copied ? (
-              <Check className="h-4 w-4 text-green-500" />
+              <Check aria-hidden="true" className="h-4 w-4 text-green-600" />
             ) : (
-              <Copy className="h-4 w-4" />
+              <Copy aria-hidden="true" className="h-4 w-4" />
             )}
             {copied ? "Copied!" : "Copy address"}
           </button>
@@ -85,10 +95,11 @@ export function WalletDropdown() {
           {/* Disconnect */}
           <button
             role="menuitem"
-            onClick={() => { disconnect(); setOpen(false); }}
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring transition-colors"
+            tabIndex={0}
+            onClick={() => { disconnect(); handleClose(); }}
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-destructive hover:bg-destructive/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut aria-hidden="true" className="h-4 w-4" />
             Disconnect
           </button>
         </div>

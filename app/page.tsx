@@ -53,8 +53,8 @@ export default function Home() {
 
       <div className="w-full max-w-md">
         {isLoading && (
-          <div className="flex justify-center py-10">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <div className="flex justify-center py-10" role="status" aria-label="Loading signals">
+            <Loader2 aria-hidden="true" className="h-6 w-6 animate-spin text-muted-foreground" />
           </div>
         )}
 
@@ -63,7 +63,7 @@ export default function Home() {
         )}
 
         {signals && signals.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground">No signals available.</p>
+          <p role="status" className="text-center text-sm text-muted-foreground">No signals available.</p>
         )}
 
         {signals && signals.length > 0 && (
