@@ -107,7 +107,12 @@ export function SignalFeed() {
     }
 
     if (searchTerm) {
-      filtered = filtered.filter((s) => s.ticker.toLowerCase().includes(searchTerm));
+      filtered = filtered.filter(
+        (s) =>
+          s.ticker.toLowerCase().includes(searchTerm) ||
+          s.details.toLowerCase().includes(searchTerm) ||
+          s.action.toLowerCase().includes(searchTerm)
+      );
     }
 
     if (bookmarkedOnly) {
@@ -122,7 +127,13 @@ export function SignalFeed() {
     if (sortOrder === "latest") {
       copy.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     } else if (sortOrder === "hot") {
-      // Hot: highest confidence first (proxy for engagement/heat)
+      // Best Performing: newest signals with highest confidence
+      copy.sort((a, b) =>
+        b.confidence - a.confidence ||
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+    } else if (sortOrder === "confidence") {
+      // Confidence: strictly by confidence score descending
       copy.sort((a, b) => b.confidence - a.confidence);
     } else if (sortOrder === "relevant") {
       // Relevant: BUY/SELL before HOLD, then by confidence
@@ -291,7 +302,18 @@ export function SignalFeed() {
         )}
 
         {!isLoading && !isError && signals.length === 0 && (
-          <SignalEmptyState onRefresh={() => refetch()} />
+          <SignalEmptyState
+            variant={
+              direction !== "ALL" ||
+              asset.trim() !== "" ||
+              provider.trim() !== "" ||
+              bookmarkedOnly ||
+              providerSearch.trim() !== ""
+                ? "no-results"
+                : "no-signals"
+            }
+            onRefresh={() => refetch()}
+          />
         )}
 
         {/* #98: skeleton while loading — consistent loading state */}
