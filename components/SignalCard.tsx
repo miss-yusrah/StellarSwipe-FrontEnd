@@ -57,6 +57,7 @@ interface SignalCardProps {
   hasAccess?: boolean;
   requiredStake?: number;
   conflictReason?: SignalConflictReason;
+  portfolioBalance?: number;
   onTrade?: (pair: string, price: number) => void;
   onPass?: () => void;
 }
@@ -93,6 +94,7 @@ export function SignalCard({
   hasAccess = true,
   requiredStake = 1000,
   conflictReason,
+  portfolioBalance,
   onTrade,
   onPass,
 }: SignalCardProps) {
@@ -483,6 +485,7 @@ export function SignalCard({
             onClose={handleModalClose}
             onConfirm={handleModalConfirm}
             marketPrice={executionPrice}
+            portfolioBalance={portfolioBalance}
           />
         </motion.div>
       )}
