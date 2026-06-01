@@ -211,6 +211,7 @@ export default function AppPage() {
             onTrade={handleTrade}
             providerStake={50000}
             providerReputation={85}
+            portfolioBalance={assets.reduce((sum, asset) => sum + asset.value, 0)}
           />
           <div className="flex gap-3">
             <button
@@ -233,6 +234,7 @@ export default function AppPage() {
           onClose={() => setModalOpen(false)}
           marketPrice={marketPrice}
           walletBalance={250}
+          portfolioBalance={assets.reduce((sum, asset) => sum + asset.value, 0)}
         />
       </main>
     </PageTransition>
