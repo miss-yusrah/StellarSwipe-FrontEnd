@@ -85,7 +85,7 @@ export function WalletConnectErrorModal({
         >
           {/* Overlay */}
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-overlay/60 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -97,7 +97,7 @@ export function WalletConnectErrorModal({
             aria-modal="true"
             aria-labelledby="wallet-error-title"
             aria-describedby="wallet-error-description"
-            className="relative z-overlay w-full max-w-sm rounded-2xl border border-red-500/30 bg-gray-900/95 p-6 shadow-2xl"
+            className="relative z-overlay w-full max-w-sm rounded-2xl border border-red-500/30 bg-surface/95 p-6 shadow-2xl"
             initial={{ scale: 0.92, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.92, opacity: 0, y: 20 }}
@@ -107,7 +107,7 @@ export function WalletConnectErrorModal({
             <button
               onClick={onClose}
               aria-label="Close error modal"
-              className="absolute right-4 top-4 rounded-full p-1 text-gray-400 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="absolute right-4 top-4 rounded-full p-1 text-foreground-muted hover:text-foreground hover:bg-surface-high/40 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <X size={18} />
             </button>
@@ -124,13 +124,13 @@ export function WalletConnectErrorModal({
               <div>
                 <h2
                   id="wallet-error-title"
-                  className="text-base font-semibold text-white"
+                  className="text-base font-semibold text-foreground"
                 >
                   {content.title}
                 </h2>
                 <p
                   id="wallet-error-description"
-                  className="mt-0.5 text-sm text-gray-400"
+                  className="mt-0.5 text-sm text-foreground-muted"
                 >
                   {content.description}
                 </p>
@@ -138,16 +138,16 @@ export function WalletConnectErrorModal({
             </div>
 
             {/* Recovery steps */}
-            <div className="mb-5 rounded-xl border border-white/10 bg-white/5 p-4">
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <div className="mb-5 rounded-xl border border-border bg-surface-high p-4">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-foreground-muted">
                 Recovery steps
               </p>
               <ol className="space-y-2">
                 {content.steps.map((step, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
+                  <li key={i} className="flex items-start gap-2 text-sm text-foreground">
                     <CheckCircle2
                       size={14}
-                      className="mt-0.5 shrink-0 text-blue-400"
+                      className="mt-0.5 shrink-0 text-accent-primary"
                       aria-hidden="true"
                     />
                     {step}

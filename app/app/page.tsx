@@ -60,7 +60,6 @@ export default function AppPage() {
     setTimeout(() => setLoading(false), 2500);
   };
 
-  // Derive unique assets and providers for filter dropdowns
   const availableAssets = useMemo(
     () => [...new Set((signals ?? []).map((s) => s.asset).filter(Boolean))].sort(),
     [signals]
@@ -85,17 +84,17 @@ export default function AppPage() {
     return (
       <PageTransition>
         <OnboardingFlow />
-        <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-4 sm:gap-8 sm:p-8 bg-gray-950">
+        <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-4 sm:gap-8 sm:p-8 bg-background text-foreground">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="relative text-center"
           >
-            <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               StellarSwipe
             </h1>
-            <p className="mt-2 text-gray-400">Connect your Freighter wallet to get started</p>
+            <p className="mt-2 text-foreground-muted">Connect your Freighter wallet to get started</p>
           </motion.div>
 
           <motion.div
@@ -124,10 +123,9 @@ export default function AppPage() {
 
   return (
     <PageTransition>
-      <main className="min-h-screen bg-gray-950 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        {/* Header — full width at all breakpoints */}
+      <main className="min-h-screen bg-background px-4 py-6 sm:px-6 sm:py-8 lg:px-8 text-foreground">
         <header className="mx-auto mb-6 flex w-full max-w-7xl items-center justify-between sm:mb-8">
-          <h1 className="text-xl font-bold tracking-tight text-white sm:text-2xl">StellarSwipe</h1>
+          <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">StellarSwipe</h1>
           <div className="flex items-center gap-3">
             <p className="hidden text-sm font-mono text-foreground-muted sm:block">
               {publicKey?.slice(0, 8)}...{publicKey?.slice(-8)}
@@ -136,7 +134,6 @@ export default function AppPage() {
           </div>
         </header>
 
-        {/* On-chain confirmation status — full width banner */}
         <div className="mx-auto mb-4 w-full max-w-7xl">
           <OnChainConfirmationStatus
             transactionHash={pendingTransaction?.hash}
@@ -144,24 +141,18 @@ export default function AppPage() {
           />
         </div>
 
-        {/* Dashboard grid:
-            mobile  → single column, widgets stacked
-            tablet  → two columns: signal feed | portfolio sidebar
-            desktop → wider two-column with more breathing room */}
         <div className="mx-auto w-full max-w-7xl">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_320px] lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
-
-            {/* Left column — signal feed */}
             <div className="flex flex-col gap-4 min-w-0">
               <SignalFeedFilters
                 availableAssets={availableAssets}
                 availableProviders={availableProviders}
               />
 
-              <div className="rounded-3xl border border-white/10 bg-card p-4 shadow-sm sm:p-5">
+              <div className="rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-5">
                 {isLoading && (
                   <div className="flex justify-center py-10">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <Loader2 className="h-6 w-6 animate-spin text-foreground-muted" />
                   </div>
                 )}
 
@@ -170,7 +161,7 @@ export default function AppPage() {
                 )}
 
                 {filteredSignals && filteredSignals.length === 0 && (
-                  <p className="text-center text-sm text-muted-foreground">No signals available.</p>
+                  <p className="text-center text-sm text-foreground-muted">No signals available.</p>
                 )}
 
                 {filteredSignals && filteredSignals.length > 0 && (
@@ -178,9 +169,9 @@ export default function AppPage() {
                     {filteredSignals.map((signal) => (
                       <li
                         key={signal.id}
-                        className="rounded-xl border p-3 text-sm flex flex-wrap items-center justify-between gap-2 sm:p-4"
+                        className="rounded-xl border border-border p-3 text-sm flex flex-wrap items-center justify-between gap-2 sm:p-4"
                       >
-                        <span className="font-medium text-base sm:text-sm">{signal.asset}</span>
+                        <span className="font-medium text-base sm:text-sm text-foreground">{signal.asset}</span>
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs font-semibold ${signal.action === "BUY" ? "bg-green-500/15 text-green-400" : signal.action === "SELL" ? "bg-red-500/15 text-red-400" : "bg-slate-500/15 text-slate-400"}`}
                         >
@@ -193,28 +184,30 @@ export default function AppPage() {
                 )}
               </div>
 
-        {/* Signal Card demo */}
-        <div className="flex w-full max-w-md flex-col items-center gap-3 px-4 sm:px-0">
-          <SignalCard
-            loading={loading}
-            onTrade={handleTrade}
-            providerStake={50000}
-            providerReputation={85}
-            portfolioBalance={assets.reduce((sum, asset) => sum + asset.value, 0)}
-          />
-          <div className="flex gap-3">
-            <button
-              onClick={toggleLoading}
-              className="text-xs text-foreground-subtle hover:text-foreground-muted underline transition-colors"
-            >
-              Preview skeleton
-            </button>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="text-xs text-foreground-subtle hover:text-foreground-muted underline transition-colors"
-            >
-              Open trade modal
-            </button>
+              <div className="flex w-full max-w-md flex-col items-center gap-3 px-4 sm:px-0">
+                <SignalCard
+                  loading={loading}
+                  onTrade={handleTrade}
+                  providerStake={50000}
+                  providerReputation={85}
+                  portfolioBalance={assets.reduce((sum, asset) => sum + asset.value, 0)}
+                />
+                <div className="flex gap-3">
+                  <button
+                    onClick={toggleLoading}
+                    className="text-xs text-foreground-subtle hover:text-foreground-muted underline transition-colors"
+                  >
+                    Preview skeleton
+                  </button>
+                  <button
+                    onClick={() => setModalOpen(true)}
+                    className="text-xs text-foreground-subtle hover:text-foreground-muted underline transition-colors"
+                  >
+                    Open trade modal
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

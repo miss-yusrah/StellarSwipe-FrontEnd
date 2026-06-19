@@ -49,11 +49,11 @@ export function SignalFeedFilters({
   return (
     <section
       aria-label="Signal feed filters"
-      className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/5 p-3 sm:p-4"
+      className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3 sm:p-4"
     >
       {/* Title row */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <span className="flex items-center gap-2 text-xs font-medium text-gray-400 uppercase tracking-wide">
+        <span className="flex items-center gap-2 text-xs font-medium text-foreground-muted uppercase tracking-wide">
           <SlidersHorizontal size={13} aria-hidden="true" />
           Filters
         </span>
@@ -95,7 +95,7 @@ export function SignalFeedFilters({
               "rounded-full px-3 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
               asset === assetLabel
                 ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40"
-                : "bg-white/5 text-gray-300 border border-white/10 hover:border-white/20 hover:text-gray-200"
+                : "bg-surface text-foreground border border-border hover:border-border-strong hover:text-foreground"
             )}
           >
             {assetLabel}
@@ -112,7 +112,7 @@ export function SignalFeedFilters({
               "rounded-full px-3 py-1 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
               provider === providerLabel
                 ? "bg-orange-500/15 text-orange-300 border border-orange-500/40"
-                : "bg-white/5 text-gray-300 border border-white/10 hover:border-white/20 hover:text-gray-200"
+                : "bg-surface text-foreground border border-border hover:border-border-strong hover:text-foreground"
             )}
           >
             {providerLabel}
@@ -136,7 +136,7 @@ export function SignalFeedFilters({
                     : value === "SELL"
                     ? "bg-red-500/20 text-red-400 border border-red-500/40"
                     : "bg-blue-500/20 text-blue-400 border border-blue-500/40"
-                  : "bg-white/5 text-gray-400 border border-white/10 hover:border-white/20 hover:text-gray-300"
+                  : "bg-surface text-foreground-muted border border-border hover:border-border-strong hover:text-foreground"
               )}
             >
               {label}
@@ -170,7 +170,7 @@ export function SignalFeedFilters({
                 placeholder="Asset (e.g. XLM)"
                 aria-label="Filter by asset"
                 maxLength={10}
-                className="rounded-full bg-white/5 border border-white/10 px-3 py-1 text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-white/20 transition-colors w-32"
+                className="rounded-full bg-surface border border-border px-3 py-1 text-xs text-foreground placeholder-foreground-subtle focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-border-strong transition-colors w-32"
               />
               {asset && (
                 <button
@@ -193,7 +193,7 @@ export function SignalFeedFilters({
             value={provider}
             onChange={(e) => setProvider(e.target.value)}
             aria-label="Filter by provider"
-            className="appearance-none rounded-full bg-white/5 border border-white/10 px-3 py-1 text-xs text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-white/20 transition-colors"
+            className="appearance-none rounded-full bg-surface border border-border px-3 py-1 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-border-strong transition-colors"
           >
             <option value="">All providers</option>
             {availableProviders.map((p) => (
