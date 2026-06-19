@@ -28,12 +28,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Apply persisted theme before first paint to avoid flash */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=JSON.parse(localStorage.getItem('stellar-theme')||'{}');var theme=t.state&&t.state.theme;if(theme==='light'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('light');}}catch(e){}})();`,
+            __html: `(function(){try{var item=localStorage.getItem('stellar-theme');var theme=item?JSON.parse(item).state?.theme:null; if(!theme){theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';} document.documentElement.classList.remove('light','dark'); document.documentElement.classList.add(theme);}catch(e){}})();`,
           }}
         />
       </head>

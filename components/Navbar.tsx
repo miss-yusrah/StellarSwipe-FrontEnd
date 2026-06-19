@@ -22,7 +22,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-gray-950/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-md">
         <nav
           className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6"
           aria-label="Main navigation"
@@ -30,7 +30,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
+            className="flex items-center gap-2 font-bold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
             aria-label="StellarSwipe home"
           >
             <Zap className="h-5 w-5 text-blue-400" aria-hidden="true" />
@@ -43,7 +43,7 @@ export function Navbar() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="rounded-md px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  className="rounded-md px-3 py-1.5 text-sm text-foreground-muted hover:text-foreground hover:bg-surface-high/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   {label}
                 </Link>

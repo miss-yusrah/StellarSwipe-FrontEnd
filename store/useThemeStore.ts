@@ -18,6 +18,9 @@ export const useThemeStore = create<ThemeState>()(
       setTheme: (theme) => set({ theme }),
       toggle: () => set({ theme: get().theme === "dark" ? "light" : "dark" }),
     }),
-    { name: "stellar-theme" }
+    {
+      name: "stellar-theme",
+      getStorage: () => (typeof window !== "undefined" ? localStorage : undefined),
+    }
   )
 );
