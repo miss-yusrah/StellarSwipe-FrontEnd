@@ -10,6 +10,7 @@ import { useTransactionStore } from "@/store/useTransactionStore";
 import { Button } from "@/components/ui/button";
 import { SignalErrorState } from "@/components/SignalErrorState";
 import { SignalFeedFilters } from "@/components/SignalFeedFilters";
+import { SignalFeedErrorBoundary } from "@/components/signal/SignalFeedErrorBoundary";
 import { Loader2 } from "lucide-react";
 import { TradeModal } from "@/components/TradeModal";
 import { WalletSelectionModal } from "@/components/WalletSelectionModal";
@@ -150,38 +151,40 @@ export default function AppPage() {
               />
 
               <div className="rounded-3xl border border-border bg-card p-4 shadow-sm sm:p-5">
-                {isLoading && (
-                  <div className="flex justify-center py-10">
-                    <Loader2 className="h-6 w-6 animate-spin text-foreground-muted" />
-                  </div>
-                )}
+                <SignalFeedErrorBoundary onRetry={refetch}>
+                  {isLoading && (
+                    <div className="flex justify-center py-10">
+                      <Loader2 className="h-6 w-6 animate-spin text-foreground-muted" />
+                    </div>
+                  )}
 
-                {error && (
-                  <SignalErrorState error={error as Error} onRetry={refetch} />
-                )}
+                  {error && (
+                    <SignalErrorState error={error as Error} onRetry={refetch} />
+                  )}
 
-                {filteredSignals && filteredSignals.length === 0 && (
-                  <p className="text-center text-sm text-foreground-muted">No signals available.</p>
-                )}
+                  {filteredSignals && filteredSignals.length === 0 && (
+                    <p className="text-center text-sm text-foreground-muted">No signals available.</p>
+                  )}
 
-                {filteredSignals && filteredSignals.length > 0 && (
-                  <ul className="flex flex-col gap-3" role="list" aria-label="Signal list">
-                    {filteredSignals.map((signal) => (
-                      <li
-                        key={signal.id}
-                        className="rounded-xl border border-border p-3 text-sm flex flex-wrap items-center justify-between gap-2 sm:p-4"
-                      >
-                        <span className="font-medium text-base sm:text-sm text-foreground">{signal.asset}</span>
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${signal.action === "BUY" ? "bg-green-500/15 text-green-400" : signal.action === "SELL" ? "bg-red-500/15 text-red-400" : "bg-slate-500/15 text-slate-400"}`}
+                  {filteredSignals && filteredSignals.length > 0 && (
+                    <ul className="flex flex-col gap-3" role="list" aria-label="Signal list">
+                      {filteredSignals.map((signal) => (
+                        <li
+                          key={signal.id}
+                          className="rounded-xl border border-border p-3 text-sm flex flex-wrap items-center justify-between gap-2 sm:p-4"
                         >
-                          {signal.action}
-                        </span>
-                        <span className="text-muted-foreground text-xs">{signal.confidence}% confidence</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                          <span className="font-medium text-base sm:text-sm text-foreground">{signal.asset}</span>
+                          <span
+                            className={`rounded-full px-2 py-0.5 text-xs font-semibold ${signal.action === "BUY" ? "bg-green-500/15 text-green-400" : signal.action === "SELL" ? "bg-red-500/15 text-red-400" : "bg-slate-500/15 text-slate-400"}`}
+                          >
+                            {signal.action}
+                          </span>
+                          <span className="text-muted-foreground text-xs">{signal.confidence}% confidence</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </SignalFeedErrorBoundary>
               </div>
 
               <div className="flex w-full max-w-md flex-col items-center gap-3 px-4 sm:px-0">
