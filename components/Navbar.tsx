@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/signals", label: "Signals" },
   { href: "/providers", label: "Providers" },
+  { href: "/security", label: "Security" },
 ];
 
 export function Navbar() {
